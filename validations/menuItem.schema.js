@@ -1,14 +1,14 @@
 const { z } = require("zod");
 
+// All fields optional; accept null or undefined. Categories may be null or an empty array.
+// Using nullish() allows both undefined and null for each primitive.
 const insertMenuItemSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  price: z.number().positive("Price must be positive"),
-  imageUrl: z.string().min(1, "Image URL is required"),
-  fallbackImagePath: z.string().optional(),
-  categories: z
-    .array(z.string())
-    .min(1, "At least one category is required"),
-});
+  title: z.string().nullish(),
+  description: z.string().nullish(),
+  price: z.number().nullish(),
+  imageUrl: z.string().nullish(),
+  fallbackImagePath: z.string().nullish(),
+  categories: z.array(z.string()).nullish(),
+}).strict();
 
 module.exports = { insertMenuItemSchema };

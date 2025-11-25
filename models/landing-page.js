@@ -5,12 +5,12 @@ const headerBannerSchema = new mongoose.Schema(
   {
     address: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       validate: {
         validator: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
         message: "Must be a valid email",
@@ -18,12 +18,12 @@ const headerBannerSchema = new mongoose.Schema(
     },
     openingHours: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     mobileNumber: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
   },
@@ -37,17 +37,17 @@ const heroSectionSchema = new mongoose.Schema(
   {
     title1: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     title2: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     backgroundImage: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }
@@ -60,21 +60,21 @@ const heroScrollMenuItemSchema = new mongoose.Schema(
   {
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     title1: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     title2: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
   },
@@ -88,26 +88,26 @@ const aboutSectionSchema = new mongoose.Schema(
   {
     leftImage: {
       type: String,
-      required: true,
+      required: false,
     },
     rightTitle1: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     rightTitle2: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     legendTitle: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }
@@ -120,20 +120,20 @@ const howWeWorkItemSchema = new mongoose.Schema(
   {
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
   },
@@ -147,16 +147,16 @@ const galleryItemSchema = new mongoose.Schema(
   {
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
   },
@@ -170,16 +170,16 @@ const faqItemSchema = new mongoose.Schema(
   {
     question: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     answer: {
       type: String,
-      required: true,
+      required: false,
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
   },
@@ -193,36 +193,41 @@ const eventSchema = new mongoose.Schema(
   {
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     title: {
       type: String,
-      required: true,
+      required: false,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: false,
       trim: true,
     },
     mondayToThursday: {
       startTime: {
         type: String,
-        required: true,
+        required: false,
       },
       endTime: {
         type: String,
-        required: true,
+        required: false,
       },
     },
     fridayToSaturday: {
       startTime: {
         type: String,
-        required: true,
+        required: false,
       },
       endTime: {
         type: String,
-        required: true,
+        required: false,
       },
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
       default: 0,
     },
   },
@@ -236,12 +241,12 @@ const contactSectionSchema = new mongoose.Schema(
   {
     address: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       validate: {
         validator: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
         message: "Must be a valid email",
@@ -249,12 +254,12 @@ const contactSectionSchema = new mongoose.Schema(
     },
     mobileNumber: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     openingHours: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
   },
@@ -268,12 +273,12 @@ const footerContactSchema = new mongoose.Schema(
   {
     phone: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
       validate: {
         validator: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
         message: "Must be a valid email",
@@ -288,13 +293,13 @@ const FooterContact = mongoose.model("FooterContact", footerContactSchema);
 // 11. Testimonial Schema
 const testimonialSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
-    role: { type: String, required: true, trim: true },
-    text: { type: String, required: true },
-    image: { type: String, required: true },
+  name: { type: String, required: false, trim: true },
+  role: { type: String, required: false, trim: true },
+  text: { type: String, required: false },
+  image: { type: String, required: false },
     quoteImage: { type: String, required: false },
-    stars: { type: Number, required: true, min: 1, max: 5, default: 5 },
-    order: { type: Number, required: true, default: 0 },
+  stars: { type: Number, required: false, min: 1, max: 5, default: 5 },
+  order: { type: Number, required: false, default: 0 },
   },
   { timestamps: true }
 );
@@ -304,20 +309,20 @@ const Testimonial = mongoose.model("Testimonial", testimonialSchema);
 // 12. Team Member Schema
 const socialLinkSchema = new mongoose.Schema(
   {
-    platform: { type: String, required: true },
-    url: { type: String, required: true },
+  platform: { type: String, required: false },
+  url: { type: String, required: false },
   },
   { _id: false }
 );
 
 const teamMemberSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, trim: true },
-    role: { type: String, required: true, trim: true },
-    image: { type: String, required: true },
+  name: { type: String, required: false, trim: true },
+  role: { type: String, required: false, trim: true },
+  image: { type: String, required: false },
     bgImage: { type: String, required: false },
     socials: { type: [socialLinkSchema], default: [] },
-    order: { type: Number, required: true, default: 0 },
+  order: { type: Number, required: false, default: 0 },
   },
   { timestamps: true }
 );
@@ -327,9 +332,9 @@ const TeamMember = mongoose.model("TeamMember", teamMemberSchema);
 // 13. Navbar Item Schema
 const navItemSchema = new mongoose.Schema(
   {
-    label: { type: String, required: true, trim: true },
-    href: { type: String, required: true, trim: true },
-    order: { type: Number, required: true, default: 0 },
+  label: { type: String, required: false, trim: true },
+  href: { type: String, required: false, trim: true },
+  order: { type: Number, required: false, default: 0 },
   },
   { timestamps: true }
 );
@@ -339,12 +344,12 @@ const NavItem = mongoose.model("NavItem", navItemSchema);
 // 14. Food Category (for marquee) Schema
 const foodCategorySchema = new mongoose.Schema(
   {
-    title: { type: String, required: true, trim: true },
-    itemCount: { type: Number, required: true, default: 0 },
-    icon: { type: String, required: true },
-    category: { type: String, required: true, trim: true },
-    slug: { type: String, required: true, trim: true },
-    order: { type: Number, required: true, default: 0 },
+  title: { type: String, required: false, trim: true },
+  itemCount: { type: Number, required: false, default: 0 },
+  icon: { type: String, required: false },
+  category: { type: String, required: false, trim: true },
+  slug: { type: String, required: false, trim: true },
+  order: { type: Number, required: false, default: 0 },
   },
   { timestamps: true }
 );
@@ -354,8 +359,8 @@ const FoodCategory = mongoose.model("FoodCategory", foodCategorySchema);
 // 15. Location Section Schema
 const locationSectionSchema = new mongoose.Schema(
   {
-    address: { type: String, required: true },
-    openingLine1: { type: String, required: true },
+  address: { type: String, required: false },
+  openingLine1: { type: String, required: false },
     openingLine2: { type: String, required: false },
     socialLinks: {
       facebook: { type: String },
@@ -363,7 +368,7 @@ const locationSectionSchema = new mongoose.Schema(
       linkedin: { type: String },
       whatsapp: { type: String },
     },
-    mapEmbedUrl: { type: String, required: true },
+  mapEmbedUrl: { type: String, required: false },
   },
   { timestamps: true }
 );

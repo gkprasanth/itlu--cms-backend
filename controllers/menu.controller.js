@@ -1,5 +1,6 @@
   const { storage } = require("../mongoStorage");
   const { insertMenuItemSchema } = require("../validations/menuItem.schema");
+  const { FoodCategory } = require("../models/landing-page");
   const { z } = require("zod");
 
   exports.getAllMenuItems = async (req, res) => {
@@ -53,26 +54,127 @@
 
   exports.createMenuItem = async (req, res) => {
     try {
-      const validatedData = insertMenuItemSchema.parse(req.body);
-      const newItem = await storage.createMenuItem(validatedData);
-      res.status(201).json(newItem);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: "Invalid data", details: error.errors });
+      console.log("[menu:create] raw body", req.body);
+
+      // If a category string is provided, enforce that it exists in FoodCategory collection
+      if (req.body.category) {
+        const cat = await FoodCategory.findOne({
+          $or: [
+            { slug: req.body.category },
+            { category: req.body.category },
+            { title: req.body.category }
+          ]
+        });
+        if (!cat) {
+          return res.status(400).json({ error: "Category does not exist. Please choose one from Food Categories." });
+        }
+        // Normalize stored category to the slug if available for consistency
+        if (cat.slug) {
+          req.body.category = cat.slug;
+        }
       }
-      res.status(500).json({ error: "Failed to create menu item" });
+
+      // If an array of categories is provided, validate each against FoodCategory
+      if (Array.isArray(req.body.categories)) {
+        const incoming = req.body.categories.filter((v) => typeof v === "string");
+        if (incoming.length !== req.body.categories.length) {
+          return res.status(400).json({ error: "Invalid categories payload." });
+        }
+        const cats = await FoodCategory.find({
+          $or: [
+            { slug: { $in: incoming } },
+            { category: { $in: incoming } },
+            { title: { $in: incoming } },
+          ],
+        }).lean();
+        const matchSet = new Map();
+        for (const c of cats) {
+          // prefer slug, fall back to category, else title
+          const normalized = c.slug || c.category || c.title;
+          matchSet.set((c.slug || c.category || c.title).toString(), normalized);
+        }
+        const notFound = incoming.filter((x) => !matchSet.has(x));
+        if (notFound.length > 0) {
+          return res.status(400).json({
+            error: `Unknown categories: ${notFound.join(", ")}. Please add them in Food Categories first.`,
+          });
+        }
+        // Normalize all incoming values to slugs (or best available canonical)
+        req.body.categories = incoming.map((x) => matchSet.get(x));
+      }
+
+      const result = insertMenuItemSchema.safeParse(req.body);
+      let payload = req.body;
+      if (!result.success) {
+        console.warn("[menu:create] validation errors (bypassed)", result.error.errors);
+      } else {
+        payload = result.data;
+      }
+      const newItem = await storage.createMenuItem(payload);
+      return res.status(201).json(newItem);
+    } catch (error) {
+      console.error("[menu:create] exception", error);
+      return res.status(500).json({ error: "Failed to create menu item" });
     }
   };
 
   exports.updateMenuItem = async (req, res) => {
     try {
       const { id } = req.params;
-      const validatedData = insertMenuItemSchema.parse(req.body);
-      const updatedItem = await storage.updateMenuItem(id, validatedData);
+      console.log("[menu:update] raw body", req.body);
+
+      if (req.body.category) {
+        const cat = await FoodCategory.findOne({
+          $or: [
+            { slug: req.body.category },
+            { category: req.body.category },
+            { title: req.body.category }
+          ]
+        });
+        if (!cat) {
+          return res.status(400).json({ error: "Category does not exist. Please choose one from Food Categories." });
+        }
+        if (cat.slug) {
+          req.body.category = cat.slug;
+        }
+      }
+
+      if (Array.isArray(req.body.categories)) {
+        const incoming = req.body.categories.filter((v) => typeof v === "string");
+        const cats = await FoodCategory.find({
+          $or: [
+            { slug: { $in: incoming } },
+            { category: { $in: incoming } },
+            { title: { $in: incoming } },
+          ],
+        }).lean();
+        const matchSet = new Map();
+        for (const c of cats) {
+          const normalized = c.slug || c.category || c.title;
+          matchSet.set((c.slug || c.category || c.title).toString(), normalized);
+        }
+        const notFound = incoming.filter((x) => !matchSet.has(x));
+        if (notFound.length > 0) {
+          return res.status(400).json({
+            error: `Unknown categories: ${notFound.join(", ")}. Please add them in Food Categories first.`,
+          });
+        }
+        req.body.categories = incoming.map((x) => matchSet.get(x));
+      }
+
+      const result = insertMenuItemSchema.safeParse(req.body);
+      let payload = req.body;
+      if (result.success) {
+        payload = result.data;
+      } else {
+        console.warn("[menu:update] validation errors (bypassed)", result.error.errors);
+      }
+      const updatedItem = await storage.updateMenuItem(id, payload);
       if (!updatedItem) return res.status(404).json({ error: "Menu item not found" });
-      res.json(updatedItem);
-    } catch {
-      res.status(500).json({ error: "Failed to update menu item" });
+      return res.json(updatedItem);
+    } catch (e) {
+      console.error("[menu:update] exception", e);
+      return res.status(500).json({ error: "Failed to update menu item" });
     }
   };
 

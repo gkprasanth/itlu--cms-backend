@@ -1,24 +1,25 @@
 const mongoose = require("mongoose");
 
+// All fields are now optional to allow creating extremely minimal menu items.
+// Any downstream rendering logic should defensively handle missing/undefined values.
 const menuItemSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     price: {
       type: Number,
-      required: true,
-      min: [1, "Price must be positive"],
+      required: false,
     },
     imageUrl: {
       type: String,
-      required: true,
+      required: false,
     },
     // Optional local fallback image path from the frontend public folder
     fallbackImagePath: {
@@ -27,11 +28,8 @@ const menuItemSchema = new mongoose.Schema(
     },
     categories: {
       type: [String],
-      required: true,
-      validate: {
-        validator: (v) => v.length > 0,
-        message: "At least one category is required",
-      },
+      required: false, // May be undefined or empty array
+      default: undefined,
     },
   },
   { timestamps: true }
