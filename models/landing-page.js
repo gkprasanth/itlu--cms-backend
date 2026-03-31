@@ -188,8 +188,8 @@ const faqItemSchema = new mongoose.Schema(
 
 const FaqItem = mongoose.model("FaqItem", faqItemSchema);
 
-// 8. Events Schema
-const eventSchema = new mongoose.Schema(
+// 8. Catering Schema
+const cateringSchema = new mongoose.Schema(
   {
     image: {
       type: String,
@@ -205,26 +205,6 @@ const eventSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
-    mondayToThursday: {
-      startTime: {
-        type: String,
-        required: false,
-      },
-      endTime: {
-        type: String,
-        required: false,
-      },
-    },
-    fridayToSaturday: {
-      startTime: {
-        type: String,
-        required: false,
-      },
-      endTime: {
-        type: String,
-        required: false,
-      },
-    },
     order: {
       type: Number,
       required: false,
@@ -234,7 +214,7 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Event = mongoose.model("Event", eventSchema);
+const Catering = mongoose.model("Catering", cateringSchema);
 
 // 9. Contact Section Schema
 const contactSectionSchema = new mongoose.Schema(
@@ -383,7 +363,7 @@ module.exports = {
   HowWeWorkItem,
   GalleryItem,
   FaqItem,
-  Event,
+  Catering,
   ContactSection,
   FooterContact,
   Testimonial,
