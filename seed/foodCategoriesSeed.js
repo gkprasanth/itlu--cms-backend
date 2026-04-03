@@ -10,13 +10,10 @@ const { FoodCategory } = require("../models/landing-page");
 // Source list provided by user
 const RAW_CATEGORIES = [
   "All Categories",
-  "north-indian",
-  "lunch",
-  "dinner",
-  "sweets",
-  "snacks",
-  "breakfast",
-  "south-indian",
+  "mocktails",
+  "thalis",
+  "alacarte",
+  "bakery",
 ];
 
 // Helpers
@@ -52,14 +49,16 @@ async function seed() {
         category: slug, // normalize internal category field to slug
         order,
       },
-      { new: true, upsert: true }
+      { new: true, upsert: true },
     );
     results.push({ title: doc.title, slug: doc.slug, order: doc.order });
     order++;
   }
 
   console.table(results);
-  console.log("✅ Food categories seed complete (" + results.length + " items)." );
+  console.log(
+    "✅ Food categories seed complete (" + results.length + " items).",
+  );
   process.exit(0);
 }
 

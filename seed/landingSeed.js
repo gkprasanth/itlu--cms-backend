@@ -7,7 +7,7 @@ const {
   HowWeWorkItem,
   GalleryItem,
   FaqItem,
-  Event,
+  Catering,
   ContactSection,
   FooterContact,
   Testimonial,
@@ -26,7 +26,7 @@ async function clearCollections() {
     HowWeWorkItem.deleteMany({}),
     GalleryItem.deleteMany({}),
     FaqItem.deleteMany({}),
-    Event.deleteMany({}),
+    Catering.deleteMany({}),
     ContactSection.deleteMany({}),
     FooterContact.deleteMany({}),
     Testimonial.deleteMany({}),
@@ -217,13 +217,12 @@ async function seed() {
   ];
   await FaqItem.insertMany(defaultFAQs);
 
-  // Events
-  await Event.insertMany([
+  // Catering
+  await Catering.insertMany([
     {
       image: "/assets/img/opening/opening-1-left.jpg",
-      title: "Our Events",
-      mondayToThursday: { startTime: "10:00 AM", endTime: "20:00 PM" },
-      fridayToSaturday: { startTime: "12:00 AM", endTime: "23:00 PM" },
+      title: "Our Catering Services",
+      description: "We provide professional catering services for all your special occasions. From intimate gatherings to grand celebrations, our authentic vegetarian cuisine will delight your guests. Contact us today to plan your perfect event!",
       order: 1,
     },
   ]);
@@ -332,7 +331,7 @@ async function seed() {
     { label: "HOME", href: "/", order: 1 },
     { label: "ABOUT", href: "#about-sec", order: 2 },
     { label: "MENU", href: "#menu-sec", order: 3 },
-    { label: "Events", href: "#events-sec", order: 4 },
+    { label: "Catering", href: "#catering-sec", order: 4 },
     { label: "Gallery", href: "#gallery-sec-1", order: 5 },
     { label: "Testimonials", href: "#testi-sec", order: 6 },
     { label: "FAQs", href: "#faq-sec", order: 7 },

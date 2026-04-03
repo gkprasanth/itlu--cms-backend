@@ -1,4 +1,4 @@
-const { HeaderBanner, HeroSection, HeroScrollMenuItem, AboutSection, HowWeWorkItem, GalleryItem, FaqItem, Event, ContactSection, FooterContact, Testimonial, TeamMember, NavItem, FoodCategory, LocationSection } = require("../models/landing-page");
+const { HeaderBanner, HeroSection, HeroScrollMenuItem, AboutSection, HowWeWorkItem, GalleryItem, FaqItem, Catering, ContactSection, FooterContact, Testimonial, TeamMember, NavItem, FoodCategory, LocationSection } = require("../models/landing-page");
 
 // Header Banner Controller
 exports.getHeaderBanner = async (req, res) => {
@@ -243,44 +243,44 @@ exports.deleteFaqItem = async (req, res) => {
   }
 };
 
-// Events Controller
-exports.getAllEvents = async (req, res) => {
+// Catering Controller
+exports.getAllCatering = async (req, res) => {
   try {
-    const items = await Event.find().sort({ order: 1 });
+    const items = await Catering.find().sort({ order: 1 });
     res.json(items);
   } catch {
-    res.status(500).json({ error: "Failed to fetch events" });
+    res.status(500).json({ error: "Failed to fetch catering items" });
   }
 };
 
-exports.createEvent = async (req, res) => {
+exports.createCatering = async (req, res) => {
   try {
-    const item = await Event.create(req.body);
+    const item = await Catering.create(req.body);
     res.status(201).json(item);
   } catch {
-    res.status(500).json({ error: "Failed to create event" });
+    res.status(500).json({ error: "Failed to create catering item" });
   }
 };
 
-exports.updateEvent = async (req, res) => {
+exports.updateCatering = async (req, res) => {
   try {
     const { id } = req.params;
-    const item = await Event.findByIdAndUpdate(id, req.body, { new: true });
-    if (!item) return res.status(404).json({ error: "Event not found" });
+    const item = await Catering.findByIdAndUpdate(id, req.body, { new: true });
+    if (!item) return res.status(404).json({ error: "Catering item not found" });
     res.json(item);
   } catch {
-    res.status(500).json({ error: "Failed to update event" });
+    res.status(500).json({ error: "Failed to update catering item" });
   }
 };
 
-exports.deleteEvent = async (req, res) => {
+exports.deleteCatering = async (req, res) => {
   try {
     const { id } = req.params;
-    const item = await Event.findByIdAndDelete(id);
-    if (!item) return res.status(404).json({ error: "Event not found" });
+    const item = await Catering.findByIdAndDelete(id);
+    if (!item) return res.status(404).json({ error: "Catering item not found" });
     res.status(204).send();
   } catch {
-    res.status(500).json({ error: "Failed to delete event" });
+    res.status(500).json({ error: "Failed to delete catering item" });
   }
 };
 

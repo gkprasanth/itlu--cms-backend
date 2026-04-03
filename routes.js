@@ -3,6 +3,8 @@ const menuController = require("./controllers/menu.controller");
 const landingController = require("./controllers/landing.controller");
 
 async function registerRoutes(app) {
+  // Health check route
+  app.get("/health", (req, res) => res.json({ status: "ok" }));
 
   // Header Banner Routes
   app.get("/api/header-banner", landingController.getHeaderBanner);
@@ -41,11 +43,11 @@ async function registerRoutes(app) {
   app.put("/api/faq/:id", landingController.updateFaqItem);
   app.delete("/api/faq/:id", landingController.deleteFaqItem);
 
-  // Events Routes
-  app.get("/api/events", landingController.getAllEvents);
-  app.post("/api/events", landingController.createEvent);
-  app.put("/api/events/:id", landingController.updateEvent);
-  app.delete("/api/events/:id", landingController.deleteEvent);
+  // Catering Routes
+  app.get("/api/catering", landingController.getAllCatering);
+  app.post("/api/catering", landingController.createCatering);
+  app.put("/api/catering/:id", landingController.updateCatering);
+  app.delete("/api/catering/:id", landingController.deleteCatering);
 
   // Contact Section Routes
   app.get("/api/contact-section", landingController.getContactSection);
