@@ -3,6 +3,8 @@ const menuController = require("./controllers/menu.controller");
 const landingController = require("./controllers/landing.controller");
 
 async function registerRoutes(app) {
+  // Health check route
+  app.get("/health", (req, res) => res.json({ status: "ok" }));
 
   // Header Banner Routes
   app.get("/api/header-banner", landingController.getHeaderBanner);
